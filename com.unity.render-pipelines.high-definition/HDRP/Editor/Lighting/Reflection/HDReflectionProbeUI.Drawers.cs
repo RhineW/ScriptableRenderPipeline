@@ -330,12 +330,12 @@ namespace UnityEditor.Experimental.Rendering
             if (EditorGUI.EndChangeCheck())
                 s.SetShapeTarget(p.influenceShape.intValue);
 
-            switch ((ShapeType)p.influenceShape.enumValueIndex)
+            switch ((Shape)p.influenceShape.enumValueIndex)
             {
-                case ShapeType.Box:
+                case Shape.Box:
                     Drawer_InfluenceShapeBoxSettings(s, p, owner);
                     break;
-                case ShapeType.Sphere:
+                case Shape.Sphere:
                     Drawer_InfluenceShapeSphereSettings(s, p, owner);
                     break;
             }
@@ -395,11 +395,11 @@ namespace UnityEditor.Experimental.Rendering
 
         static void Drawer_InfluenceAreas(HDReflectionProbeUI s, SerializedHDReflectionProbe p, Editor owner)
         {
-            if (s.IsSectionExpandedShape(ShapeType.Box).value)
+            if (s.IsSectionExpandedShape(Shape.Box).value)
             {
                 Drawer_InfluenceBoxSettings(s, p, owner);
             }
-            if (s.IsSectionExpandedShape(ShapeType.Sphere).value)
+            if (s.IsSectionExpandedShape(Shape.Sphere).value)
             {
                 Drawer_InfluenceSphereSettings(s, p, owner);
             }

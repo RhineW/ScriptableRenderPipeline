@@ -24,7 +24,7 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
                         CED.space,
                         CED.Action(Drawer_FieldShapeType),
                         CED.FadeGroup(
-                            (s, d, o, i) => s.IsSectionExpanded_Shape((ShapeType)i),
+                            (s, d, o, i) => s.IsSectionExpanded_Shape((Shape)i),
                             FadeOption.None,
                             SectionShapeBox,
                             SectionShapeSphere

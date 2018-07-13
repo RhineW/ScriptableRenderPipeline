@@ -16,11 +16,9 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         public enum CapturePositionMode
         {
             Static,
-            MirrorCamera
+            MirrorCamera,
         }
 
-        [SerializeField]
-        InfluenceVolume m_InfluenceVolume = new InfluenceVolume();
         [SerializeField]
         Vector3 m_CaptureLocalPosition;
         [SerializeField]
@@ -50,8 +48,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         public bool overrideFieldOfView { get { return m_OverrideFieldOfView; } }
         public float fieldOfViewOverride { get { return m_FieldOfViewOverride; } }
 
-        public InfluenceVolume influenceVolume { get { return m_InfluenceVolume; } }
-        public BoundingSphere boundingSphere { get { return m_InfluenceVolume.GetBoundingSphereAt(transform); } }
+        public BoundingSphere boundingSphere { get { return influenceVolume.GetBoundingSphereAt(transform); } }
 
         public Texture texture
         {
@@ -69,7 +66,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
                 }
             }
         }
-        public Bounds bounds { get { return m_InfluenceVolume.GetBoundsAt(transform); } }
+        public Bounds bounds { get { return influenceVolume.GetBoundsAt(transform); } }
         public Vector3 captureLocalPosition { get { return m_CaptureLocalPosition; } set { m_CaptureLocalPosition = value; } }
         public Matrix4x4 influenceToWorld
         {
@@ -114,13 +111,13 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
                     : influenceToWorld;
             }
         }
-        public ShapeType proxyShape
+        public Shape proxyShape
         {
             get
             {
                 return proxyVolume != null
                     ? proxyVolume.proxyVolume.shapeType
-                    : influenceVolume.shapeType;
+                    : influenceVolume.shape;
             }
         }
         public Vector3 proxyExtents

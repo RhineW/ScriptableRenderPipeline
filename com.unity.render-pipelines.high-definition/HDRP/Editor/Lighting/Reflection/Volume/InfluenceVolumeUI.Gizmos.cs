@@ -26,8 +26,8 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
             if ((showedHandle & HandleType.Influence) != 0)
                 DrawGizmos_FadeHandle(
                     s, d, matrix,
-                    d.boxInfluenceOffset, d.boxInfluenceSizeOffset,
-                    d.sphereInfluenceRadiusOffset,
+                    d.boxOffset, d.boxSize,
+                    -d.sphereFade,
                     (editedHandle & HandleType.Influence) != 0,
                     k_GizmoThemeColorInfluence,
                     false);
@@ -35,8 +35,8 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
             if ((showedHandle & HandleType.InfluenceNormal) != 0)
                 DrawGizmos_FadeHandle(
                     s, d, matrix,
-                    d.boxInfluenceNormalOffset, d.boxInfluenceNormalSizeOffset,
-                    d.sphereInfluenceNormalRadiusOffset,
+                    d.boxNormalOffset, d.boxNormalSize,
+                    -d.sphereNormalFade,
                     (editedHandle & HandleType.InfluenceNormal) != 0,
                     k_GizmoThemeColorInfluenceNormal,
                     true);
@@ -50,21 +50,21 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
             var c = Gizmos.color;
             Gizmos.matrix = matrix;
             Gizmos.color = color;
-            switch (d.shapeType)
+            switch (d.shape)
             {
-                case ShapeType.Box:
+                case Shape.Box:
                 {
-                    s.boxBaseHandle.center = d.boxBaseOffset;
+                    s.boxBaseHandle.center = d.offset;
                     s.boxBaseHandle.size = d.boxBaseSize;
                     s.boxBaseHandle.DrawHull(isSolid);
                     break;
                 }
-                case ShapeType.Sphere:
+                case Shape.Sphere:
                 {
                     if (isSolid)
-                        Gizmos.DrawSphere(d.sphereBaseOffset, d.sphereBaseRadius);
+                        Gizmos.DrawSphere(d.offset, d.sphereBaseRadius);
                     else
-                        Gizmos.DrawWireSphere(d.sphereBaseOffset, d.sphereBaseRadius);
+                        Gizmos.DrawWireSphere(d.offset, d.sphereBaseRadius);
                     break;
                 }
             }
@@ -82,22 +82,22 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
             var c = Gizmos.color;
             Gizmos.matrix = matrix;
             Gizmos.color = color;
-            switch (d.shapeType)
+            switch (d.shape)
             {
-                case ShapeType.Box:
+                case Shape.Box:
                 {
                     Gizmo6FacesBox refBox = isNormal ? s.boxInfluenceNormalHandle : s.boxInfluenceHandle;
-                    refBox.center = d.boxBaseOffset + boxOffset;
+                    refBox.center = d.offset + boxOffset;
                     refBox.size = d.boxBaseSize + boxSizeOffset;
                     refBox.DrawHull(isSolid);
                     break;
                 }
-                case ShapeType.Sphere:
+                case Shape.Sphere:
                 {
                     if (isSolid)
-                        Gizmos.DrawSphere(d.sphereBaseOffset, d.sphereBaseRadius + sphereOffset);
+                        Gizmos.DrawSphere(d.offset, d.sphereBaseRadius + sphereOffset);
                     else
-                        Gizmos.DrawWireSphere(d.sphereBaseOffset, d.sphereBaseRadius + sphereOffset);
+                        Gizmos.DrawWireSphere(d.offset, d.sphereBaseRadius + sphereOffset);
                     break;
                 }
             }

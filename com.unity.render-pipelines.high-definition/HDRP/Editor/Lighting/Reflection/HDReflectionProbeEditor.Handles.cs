@@ -86,9 +86,9 @@ namespace UnityEditor.Experimental.Rendering
             var mat = Handles.matrix;
             var col = Handles.color;
             Handles.matrix = HDReflectionProbeEditorUtility.GetLocalSpace(sp.target);
-            switch ((ShapeType)sp.influenceShape.enumValueIndex)
+            switch ((Shape)sp.influenceShape.enumValueIndex)
             {
-                case ShapeType.Box:
+                case Shape.Box:
                     {
                         alternativeBlendBox.center = sp.target.center - (probeBlendDistancePositive - probeBlendDistanceNegative) * 0.5f;
                         alternativeBlendBox.size = sp.target.size - probeBlendDistancePositive - probeBlendDistanceNegative;
@@ -123,7 +123,7 @@ namespace UnityEditor.Experimental.Rendering
                         }
                         break;
                     }
-                case ShapeType.Sphere:
+                case Shape.Sphere:
                     {
                         sphereHandle.center = sp.target.center;
                         sphereHandle.radius = Mathf.Clamp(sp.targetData.influenceSphereRadius - probeBlendDistancePositive.x, 0, sp.targetData.influenceSphereRadius);
@@ -203,9 +203,9 @@ namespace UnityEditor.Experimental.Rendering
             var mat = Handles.matrix;
             var col = Handles.color;
             Handles.matrix = HDReflectionProbeEditorUtility.GetLocalSpace(sp.target);
-            switch ((ShapeType)sp.influenceShape.enumValueIndex)
+            switch ((Shape)sp.influenceShape.enumValueIndex)
             {
-                case ShapeType.Box:
+                case Shape.Box:
                     {
                         s.alternativeBoxInfluenceHandle.center = sp.target.center;
                         s.alternativeBoxInfluenceHandle.size = sp.target.size;
@@ -234,7 +234,7 @@ namespace UnityEditor.Experimental.Rendering
                         }
                         break;
                     }
-                case ShapeType.Sphere:
+                case Shape.Sphere:
                     {
                         s.sphereInfluenceHandle.center = sp.target.center;
                         s.sphereInfluenceHandle.radius = sp.targetData.influenceSphereRadius;

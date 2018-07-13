@@ -33,19 +33,19 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
         {
             this.root = root;
 
-            shapeType = root.Find((InfluenceVolume i) => i.shapeType);
+            shapeType = root.Find((InfluenceVolume i) => i.shape);
             boxBaseSize = root.Find((InfluenceVolume i) => i.boxBaseSize);
-            boxBaseOffset = root.Find((InfluenceVolume i) => i.boxBaseOffset);
-            boxInfluencePositiveFade = root.Find((InfluenceVolume i) => i.boxInfluencePositiveFade);
-            boxInfluenceNegativeFade = root.Find((InfluenceVolume i) => i.boxInfluenceNegativeFade);
-            boxInfluenceNormalPositiveFade = root.Find((InfluenceVolume i) => i.boxInfluenceNormalPositiveFade);
-            boxInfluenceNormalNegativeFade = root.Find((InfluenceVolume i) => i.boxInfluenceNormalNegativeFade);
-            boxPositiveFaceFade = root.Find((InfluenceVolume i) => i.boxPositiveFaceFade);
-            boxNegativeFaceFade = root.Find((InfluenceVolume i) => i.boxNegativeFaceFade);
+            boxBaseOffset = root.Find((InfluenceVolume i) => i.offset);
+            boxInfluencePositiveFade = root.Find((InfluenceVolume i) => i.boxPositiveFade);
+            boxInfluenceNegativeFade = root.Find((InfluenceVolume i) => i.boxNegativeFade);
+            boxInfluenceNormalPositiveFade = root.Find((InfluenceVolume i) => i.boxNormalPositiveFade);
+            boxInfluenceNormalNegativeFade = root.Find((InfluenceVolume i) => i.boxNormalNegativeFade);
+            boxPositiveFaceFade = root.Find((InfluenceVolume i) => i.boxFacePositiveFade);
+            boxNegativeFaceFade = root.Find((InfluenceVolume i) => i.boxFaceNegativeFade);
             sphereBaseRadius = root.Find((InfluenceVolume i) => i.sphereBaseRadius);
-            sphereBaseOffset = root.Find((InfluenceVolume i) => i.sphereBaseOffset);
-            sphereInfluenceFade = root.Find((InfluenceVolume i) => i.sphereInfluenceFade);
-            sphereInfluenceNormalFade = root.Find((InfluenceVolume i) => i.sphereInfluenceNormalFade);
+            sphereBaseOffset = root.Find((InfluenceVolume i) => i.offset);
+            sphereInfluenceFade = root.Find((InfluenceVolume i) => i.sphereFade);
+            sphereInfluenceNormalFade = root.Find((InfluenceVolume i) => i.sphereNormalFade);
 
             editorAdvancedModeBlendDistancePositive = root.FindPropertyRelative("editorAdvancedModeBlendDistancePositive");
             editorAdvancedModeBlendDistanceNegative = root.FindPropertyRelative("editorAdvancedModeBlendDistanceNegative");

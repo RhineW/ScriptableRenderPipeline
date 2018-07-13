@@ -157,9 +157,9 @@ namespace UnityEditor.Experimental.Rendering
 
         static void ApplyConstraintsOnTargets(HDReflectionProbeUI s, SerializedHDReflectionProbe sp, Editor o)
         {
-            switch ((ShapeType)sp.influenceShape.enumValueIndex)
+            switch ((Shape)sp.influenceShape.enumValueIndex)
             {
-                case ShapeType.Box:
+                case Shape.Box:
                 {
                     var maxBlendDistance = HDReflectionProbeEditorUtility.CalculateBoxMaxBlendDistance(s, sp, o);
                     sp.targetData.blendDistancePositive = Vector3.Min(sp.targetData.blendDistancePositive, maxBlendDistance);
@@ -168,7 +168,7 @@ namespace UnityEditor.Experimental.Rendering
                     sp.targetData.blendNormalDistanceNegative = Vector3.Min(sp.targetData.blendNormalDistanceNegative, maxBlendDistance);
                     break;
                 }
-                case ShapeType.Sphere:
+                case Shape.Sphere:
                 {
                     var maxBlendDistance = Vector3.one * HDReflectionProbeEditorUtility.CalculateSphereMaxBlendDistance(s, sp, o);
                     sp.targetData.blendDistancePositive = Vector3.Min(sp.targetData.blendDistancePositive, maxBlendDistance);
