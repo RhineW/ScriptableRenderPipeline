@@ -8,12 +8,14 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
     {
         [SerializeField, FormerlySerializedAs("m_ShapeType")]
         Shape m_Shape = Shape.Box;
+        [SerializeField, FormerlySerializedAs("m_BoxBaseOffset")]
+        Vector3 m_Offset;
+        [SerializeField, Obsolete("Kept only for compatibility. Use m_Offset instead")]
+        Vector3 m_SphereBaseOffset;
 
         // Box
         [SerializeField]
         Vector3 m_BoxBaseSize = Vector3.one;
-        [SerializeField]
-        Vector3 m_BoxBaseOffset;
         [SerializeField, FormerlySerializedAs("m_BoxInfluencePositiveFade")]
         Vector3 m_BoxPositiveFade;
         [SerializeField, FormerlySerializedAs("m_BoxInfluenceNegativeFade")]
@@ -40,48 +42,16 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         // Sphere
         [SerializeField]
         float m_SphereBaseRadius = 1;
-        [SerializeField]
-        Vector3 m_SphereBaseOffset;
         [SerializeField, FormerlySerializedAs("m_SphereInfluenceFade")]
         float m_SphereFade;
         [SerializeField, FormerlySerializedAs("m_SphereInfluenceNormalFade")]
         float m_SphereNormalFade;
 
-        /// <summary>
-        /// Shape of the InfluenceVolume.
-        /// </summary>
+        /// <summary>Shape of this InfluenceVolume.</summary>
         public Shape shape { get { return m_Shape; } set { m_Shape = value; } }
 
-        /// <summary>
-        /// Offset of this influance volume to the component handling him.
-        /// </summary>
-        public Vector3 offset
-        {
-            get
-            {
-                switch (shape)
-                {
-                    default:
-                    case Shape.Box:
-                        return m_BoxBaseOffset;
-                    case Shape.Sphere:
-                        return m_SphereBaseOffset;
-                }
-            }
-            set
-            {
-                switch (shape)
-                {
-                    default:
-                    case Shape.Box:
-                        m_BoxBaseOffset = value;
-                        break;
-                    case Shape.Sphere:
-                        m_SphereBaseOffset = value;
-                        break;
-                }
-            }
-        }
+        /// <summary>Offset of this influence volume to the component handling him.</summary>
+        public Vector3 offset { get { return m_Offset; } set { m_Offset = value; } }
 
         public Vector3 boxBaseSize { get { return m_BoxBaseSize; } set { m_BoxBaseSize = value; } }
         public Vector3 boxPositiveFade { get { return m_BoxPositiveFade; } set { m_BoxPositiveFade = value; } }
@@ -135,6 +105,16 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         public Vector3 GetWorldPosition(Transform transform)
         {
             return transform.TransformPoint(offset);
+        }
+
+        internal void MigrateOffsetSphere()
+        {
+            if (shape == Shape.Sphere)
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                m_Offset = m_SphereBaseOffset;
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
     public class PlanarReflectionProbe : HDProbe, ISerializationCallbackReceiver
     {
         [HideInInspector]
-        const int currentVersion = 1;
+        const int currentVersion = 2;
 
         [SerializeField, FormerlySerializedAs("version")]
         int m_Version;
@@ -176,6 +176,10 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             if (m_Version != currentVersion)
             {
                 // Add here data migration code
+                if(m_Version < 2)
+                {
+                    influenceVolume.MigrateOffsetSphere();
+                }
                 m_Version = currentVersion;
             }
         }

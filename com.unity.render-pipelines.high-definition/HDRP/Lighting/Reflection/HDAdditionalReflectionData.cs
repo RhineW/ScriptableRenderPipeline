@@ -15,63 +15,25 @@ namespace UnityEngine.Experimental.Rendering
         ReflectionProbe m_LegacyProbe;
         ReflectionProbe legacyProbe { get { return m_LegacyProbe ?? (m_LegacyProbe = GetComponent<ReflectionProbe>()); } }
 
-        //data only keeped for migration
-        [SerializeField]
+        //data only kept for migration, to be removed in future version
+        [SerializeField, System.Obsolete("influenceShape is deprecated, use influenceVolume parameters instead")]
         Shape influenceShape;
-        [SerializeField]
+        [SerializeField, System.Obsolete("influenceSphereRadius is deprecated, use influenceVolume parameters instead")]
         float influenceSphereRadius = 3.0f;
-        [SerializeField]
-        float sphereReprojectionVolumeRadius = 1.0f;
-        [SerializeField]
-        bool useSeparateProjectionVolume = false;
-        [SerializeField]
-        Vector3 boxReprojectionVolumeSize = Vector3.one;
-        [SerializeField]
-        Vector3 boxReprojectionVolumeCenter = Vector3.zero;
-        [SerializeField]
-        float maxSearchDistance = 8.0f;
-        [SerializeField]
-        Texture previewCubemap;
-        [SerializeField]
+        [SerializeField, System.Obsolete("blendDistancePositive is deprecated, use influenceVolume parameters instead")]
         Vector3 blendDistancePositive = Vector3.zero;
-        [SerializeField]
+        [SerializeField, System.Obsolete("blendDistanceNegative is deprecated, use influenceVolume parameters instead")]
         Vector3 blendDistanceNegative = Vector3.zero;
-        [SerializeField]
+        [SerializeField, System.Obsolete("blendNormalDistancePositive is deprecated, use influenceVolume parameters instead")]
         Vector3 blendNormalDistancePositive = Vector3.zero;
-        [SerializeField]
+        [SerializeField, System.Obsolete("blendNormalDistanceNegative is deprecated, use influenceVolume parameters instead")]
         Vector3 blendNormalDistanceNegative = Vector3.zero;
-        [SerializeField]
+        [SerializeField, System.Obsolete("boxSideFadePositive is deprecated, use influenceVolume parameters instead")]
         Vector3 boxSideFadePositive = Vector3.one;
-        [SerializeField]
+        [SerializeField, System.Obsolete("boxSideFadeNegative is deprecated, use influenceVolume parameters instead")]
         Vector3 boxSideFadeNegative = Vector3.one;
 
-        //editor value that need to be saved for easy passing from simplified to advanced and vice et versa
-        // /!\ must not be used outside editor code
-        [SerializeField]
-        Vector3 editorAdvancedModeBlendDistancePositive;
-        [SerializeField]
-        Vector3 editorAdvancedModeBlendDistanceNegative;
-        [SerializeField]
-        float editorSimplifiedModeBlendDistance;
-        [SerializeField]
-        Vector3 editorAdvancedModeBlendNormalDistancePositive;
-        [SerializeField]
-        Vector3 editorAdvancedModeBlendNormalDistanceNegative;
-        [SerializeField]
-        float editorSimplifiedModeBlendNormalDistance;
-        [SerializeField]
-        bool editorAdvancedModeEnabled;
-
         bool needMigrateToHDProbeChild = false;
-
-        public Vector3 boxBlendCenterOffset { get { return (blendDistanceNegative - blendDistancePositive) * 0.5f; } }
-        public Vector3 boxBlendSizeOffset { get { return -(blendDistancePositive + blendDistanceNegative); } }
-        public Vector3 boxBlendNormalCenterOffset { get { return (blendNormalDistanceNegative - blendNormalDistancePositive) * 0.5f; } }
-        public Vector3 boxBlendNormalSizeOffset { get { return -(blendNormalDistancePositive + blendNormalDistanceNegative); } }
-
-
-        public float sphereBlendRadiusOffset { get { return -blendDistancePositive.x; } }
-        public float sphereBlendNormalRadiusOffset { get { return -blendNormalDistancePositive.x; } }
 
         public void OnBeforeSerialize()
         {
@@ -113,7 +75,19 @@ namespace UnityEngine.Experimental.Rendering
 
         void MigrateToUseInfluanceVolume()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             influenceVolume.shape = influenceShape;
+            influenceVolume.sphereBaseRadius = influenceSphereRadius;
+            influenceVolume.boxPositiveFade = blendDistancePositive;
+            influenceVolume.boxNegativeFade = blendDistanceNegative;
+            influenceVolume.boxNormalPositiveFade = blendNormalDistancePositive;
+            influenceVolume.boxNormalNegativeFade = blendNormalDistanceNegative;
+            influenceVolume.boxFacePositiveFade = boxSideFadePositive;
+            influenceVolume.boxFaceNegativeFade = boxSideFadeNegative;
+#pragma warning restore CS0618 // Type or member is obsolete
+
+            //Note: former editor parameters will be recreated as if non existent.
+            //User will lose parameters corresponding to non used mode between simplified and advanced
         }
 
         public override ReflectionProbeMode mode
