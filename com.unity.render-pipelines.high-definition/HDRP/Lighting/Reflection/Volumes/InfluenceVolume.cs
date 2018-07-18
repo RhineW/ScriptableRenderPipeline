@@ -40,12 +40,12 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         [SerializeField] private bool editorAdvancedModeEnabled;
 
         // Sphere
-        [SerializeField]
-        float m_SphereBaseRadius = 1;
+        [SerializeField, FormerlySerializedAs("m_SphereBaseRadius")]
+        float m_SphereRadius = 1;
         [SerializeField, FormerlySerializedAs("m_SphereInfluenceFade")]
-        float m_SphereFade;
+        float m_SphereBlendDistance;
         [SerializeField, FormerlySerializedAs("m_SphereInfluenceNormalFade")]
-        float m_SphereNormalFade;
+        float m_SphereBlendNormalDistance;
 
         /// <summary>Shape of this InfluenceVolume.</summary>
         public Shape shape { get { return m_Shape; } set { m_Shape = value; } }
@@ -53,22 +53,25 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
         /// <summary>Offset of this influence volume to the component handling him.</summary>
         public Vector3 offset { get { return m_Offset; } set { m_Offset = value; } }
 
-        public Vector3 boxBaseSize { get { return m_BoxBaseSize; } set { m_BoxBaseSize = value; } }
-        public Vector3 boxPositiveFade { get { return m_BoxPositiveFade; } set { m_BoxPositiveFade = value; } }
-        public Vector3 boxNegativeFade { get { return m_BoxNegativeFade; } set { m_BoxNegativeFade = value; } }
-        public Vector3 boxNormalPositiveFade { get { return m_BoxNormalPositiveFade; } set { m_BoxNormalPositiveFade = value; } }
-        public Vector3 boxNormalNegativeFade { get { return m_BoxNormalNegativeFade; } set { m_BoxNormalNegativeFade = value; } }
-        public Vector3 boxFacePositiveFade { get { return m_BoxFacePositiveFade; } set { m_BoxFacePositiveFade = value; } }
-        public Vector3 boxFaceNegativeFade { get { return m_BoxFaceNegativeFade; } set { m_BoxFaceNegativeFade = value; } }
+        public Vector3 boxSize { get { return m_BoxBaseSize; } set { m_BoxBaseSize = value; } }
 
-        public Vector3 boxOffset { get { return (boxNegativeFade - boxPositiveFade) * 0.5f; } }
-        public Vector3 boxSize { get { return -(boxPositiveFade + boxNegativeFade); } }
-        public Vector3 boxNormalOffset { get { return (boxNormalNegativeFade - boxNormalPositiveFade) * 0.5f; } }
-        public Vector3 boxNormalSize { get { return -(boxNormalPositiveFade + boxNormalNegativeFade); } }
+        public Vector3 boxBlendOffset { get { return (boxBlendDistanceNegative - boxBlendDistancePositive) * 0.5f; } }
+        public Vector3 boxBlendSize { get { return -(boxBlendDistancePositive + boxBlendDistanceNegative); } }
+        public Vector3 boxBlendDistancePositive { get { return m_BoxPositiveFade; } set { m_BoxPositiveFade = value; } }
+        public Vector3 boxBlendDistanceNegative { get { return m_BoxNegativeFade; } set { m_BoxNegativeFade = value; } }
 
-        public float sphereBaseRadius { get { return m_SphereBaseRadius; } set { m_SphereBaseRadius = value; } }
-        public float sphereFade { get { return m_SphereFade; } set { m_SphereFade = value; } }
-        public float sphereNormalFade { get { return m_SphereNormalFade; } set { m_SphereNormalFade = value; } }
+        public Vector3 boxBlendNormalOffset { get { return (boxBlendNormalDistanceNegative - boxBlendNormalDistancePositive) * 0.5f; } }
+        public Vector3 boxBlendNormalSize { get { return -(boxBlendNormalDistancePositive + boxBlendNormalDistanceNegative); } }
+        public Vector3 boxBlendNormalDistancePositive { get { return m_BoxNormalPositiveFade; } set { m_BoxNormalPositiveFade = value; } }
+        public Vector3 boxBlendNormalDistanceNegative { get { return m_BoxNormalNegativeFade; } set { m_BoxNormalNegativeFade = value; } }
+
+        public Vector3 boxSideFadePositive { get { return m_BoxFacePositiveFade; } set { m_BoxFacePositiveFade = value; } }
+        public Vector3 boxSideFadeNegative { get { return m_BoxFaceNegativeFade; } set { m_BoxFaceNegativeFade = value; } }
+
+
+        public float sphereRadius { get { return m_SphereRadius; } set { m_SphereRadius = value; } }
+        public float sphereBlendDistance { get { return m_SphereBlendDistance; } set { m_SphereBlendDistance = value; } }
+        public float sphereBlendNormalDistance { get { return m_SphereBlendNormalDistance; } set { m_SphereBlendNormalDistance = value; } }
 
         public BoundingSphere GetBoundingSphereAt(Transform transform)
         {
@@ -76,11 +79,11 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             {
                 default:
                 case Shape.Sphere:
-                    return new BoundingSphere(transform.TransformPoint(offset), sphereBaseRadius);
+                    return new BoundingSphere(transform.TransformPoint(offset), sphereRadius);
                 case Shape.Box:
                 {
                     var position = transform.TransformPoint(offset);
-                    var radius = Mathf.Max(boxBaseSize.x, Mathf.Max(boxBaseSize.y, boxBaseSize.z));
+                    var radius = Mathf.Max(boxSize.x, Mathf.Max(boxSize.y, boxSize.z));
                     return new BoundingSphere(position, radius);
                 }
             }
@@ -92,12 +95,12 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             {
                 default:
                 case Shape.Sphere:
-                    return new Bounds(transform.position, Vector3.one * sphereBaseRadius);
+                    return new Bounds(transform.position, Vector3.one * sphereRadius);
                 case Shape.Box:
                 {
                     var position = transform.TransformPoint(offset);
                     // TODO: Return a proper AABB based on influence box volume
-                    return new Bounds(position, boxBaseSize);
+                    return new Bounds(position, boxSize);
                 }
             }
         }

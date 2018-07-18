@@ -20,27 +20,27 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
                 case Shape.Box:
                     {
                         var center = d.offset;
-                        var size = d.boxBaseSize;
+                        var size = d.boxSize;
                         DrawBoxHandle(
                             s, d, o, sourceAsset,
                             s1 => s1.boxBaseHandle,
                             ref center,
                             ref size);
                         d.offset = center;
-                        d.boxBaseSize = size;
+                        d.boxSize = size;
                         break;
                     }
                 case Shape.Sphere:
                     {
                         var center = d.offset;
-                        var radius = d.sphereBaseRadius;
+                        var radius = d.sphereRadius;
                         DrawSphereHandle(
                             s, d, o, sourceAsset,
                             s1 => s1.sphereBaseHandle,
                             ref center,
                             ref radius);
                         d.offset = center;
-                        d.sphereBaseRadius = radius;
+                        d.sphereRadius = radius;
                         break;
                     }
             }
@@ -58,16 +58,16 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
             {
                 case Shape.Box:
                     {
-                        var positive = d.boxPositiveFade;
-                        var negative = d.boxNegativeFade;
+                        var positive = d.boxBlendDistancePositive;
+                        var negative = d.boxBlendDistanceNegative;
                         DrawBoxFadeHandle(
                             s, d, o, sourceAsset,
                             s1 => s1.boxInfluenceHandle,
-                            d.offset, d.boxBaseSize,
+                            d.offset, d.boxSize,
                             ref positive,
                             ref negative);
-                        s.data.boxInfluencePositiveFade.vector3Value = positive;
-                        s.data.boxInfluenceNegativeFade.vector3Value = negative;
+                        s.data.boxBlendDistancePositive.vector3Value = positive;
+                        s.data.boxBlendDistanceNegative.vector3Value = negative;
 
                         //save advanced/simplified saved data
                         if (s.data.editorAdvancedModeEnabled.boolValue)
@@ -84,13 +84,13 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
                     }
                 case Shape.Sphere:
                     {
-                        var fade = d.sphereFade;
+                        var fade = d.sphereBlendDistance;
                         DrawSphereFadeHandle(
                             s, d, o, sourceAsset,
                             s1 => s1.sphereInfluenceHandle,
-                            d.offset, d.sphereBaseRadius,
+                            d.offset, d.sphereRadius,
                             ref fade);
-                        d.sphereFade = fade;
+                        d.sphereBlendDistance = fade;
                         break;
                     }
             }
@@ -109,16 +109,16 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
                 case Shape.Box:
                     {
 
-                        Vector3 positive = d.boxNormalPositiveFade;
-                        Vector3 negative = d.boxNormalNegativeFade;
+                        Vector3 positive = d.boxBlendNormalDistancePositive;
+                        Vector3 negative = d.boxBlendNormalDistanceNegative;
                         DrawBoxFadeHandle(
                             s, d, o, sourceAsset,
                             s1 => s1.boxInfluenceNormalHandle,
-                            d.offset, d.boxBaseSize,
+                            d.offset, d.boxSize,
                             ref positive,
                             ref negative);
-                        s.data.boxInfluenceNormalPositiveFade.vector3Value = positive;
-                        s.data.boxInfluenceNormalNegativeFade.vector3Value = negative;
+                        s.data.boxBlendNormalDistancePositive.vector3Value = positive;
+                        s.data.boxBlendNormalDistanceNegative.vector3Value = negative;
 
                         //save advanced/simplified saved data
                         if (s.data.editorAdvancedModeEnabled.boolValue)
@@ -135,13 +135,13 @@ namespace UnityEditor.Experimental.Rendering.HDPipeline
                     }
                 case Shape.Sphere:
                     {
-                        var fade = d.sphereNormalFade;
+                        var fade = d.sphereBlendNormalDistance;
                         DrawSphereFadeHandle(
                             s, d, o, sourceAsset,
                             s1 => s1.sphereInfluenceNormalHandle,
-                            d.offset, d.sphereBaseRadius,
+                            d.offset, d.sphereRadius,
                             ref fade);
-                        d.sphereNormalFade = fade;
+                        d.sphereBlendNormalDistance = fade;
                         break;
                     }
             }

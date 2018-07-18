@@ -1,6 +1,5 @@
 using UnityEngine.Serialization;
 using UnityEngine.Rendering;
-using System;
 
 namespace UnityEngine.Experimental.Rendering.HDPipeline
 {
@@ -126,7 +125,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             {
                 return proxyVolume != null
                     ? proxyVolume.proxyVolume.extents
-                    : influenceVolume.boxBaseSize;
+                    : influenceVolume.boxSize;
             }
         }
         public bool infiniteProjection { get { return proxyVolume != null && proxyVolume.proxyVolume.infiniteProjection; } }

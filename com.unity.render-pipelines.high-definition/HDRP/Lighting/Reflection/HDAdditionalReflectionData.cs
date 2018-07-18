@@ -77,13 +77,13 @@ namespace UnityEngine.Experimental.Rendering
         {
 #pragma warning disable CS0618 // Type or member is obsolete
             influenceVolume.shape = influenceShape;
-            influenceVolume.sphereBaseRadius = influenceSphereRadius;
-            influenceVolume.boxPositiveFade = blendDistancePositive;
-            influenceVolume.boxNegativeFade = blendDistanceNegative;
-            influenceVolume.boxNormalPositiveFade = blendNormalDistancePositive;
-            influenceVolume.boxNormalNegativeFade = blendNormalDistanceNegative;
-            influenceVolume.boxFacePositiveFade = boxSideFadePositive;
-            influenceVolume.boxFaceNegativeFade = boxSideFadeNegative;
+            influenceVolume.sphereRadius = influenceSphereRadius;
+            influenceVolume.boxBlendDistancePositive = blendDistancePositive;
+            influenceVolume.boxBlendDistanceNegative = blendDistanceNegative;
+            influenceVolume.boxBlendNormalDistancePositive = blendNormalDistancePositive;
+            influenceVolume.boxBlendNormalDistanceNegative = blendNormalDistanceNegative;
+            influenceVolume.boxSideFadePositive = boxSideFadePositive;
+            influenceVolume.boxSideFadeNegative = boxSideFadeNegative;
 #pragma warning restore CS0618 // Type or member is obsolete
 
             //Note: former editor parameters will be recreated as if non existent.

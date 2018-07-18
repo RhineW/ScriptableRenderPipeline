@@ -1805,7 +1805,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
                         if (probeIndex < cullResults.visibleReflectionProbes.Count)
                         {
                             VisibleReflectionProbe probe = cullResults.visibleReflectionProbes[probeIndex];
-                            HDAdditionalReflectionData additional = probe.probe.GetComponent<HDAdditionalReflectionData>();
+                            HDProbe hdProbe = probe.probe.GetComponent<HDProbe>();
 
                             // probe.texture can be null when we are adding a reflection probe in the editor
                             if (probe.texture == null || envLightCount >= k_MaxEnvLightsOnScreen)
@@ -1823,7 +1823,7 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
                             }
 
                             LightVolumeType lightVolumeType = LightVolumeType.Box;
-                            if (additional != null && additional.influenceShape == Shape.Sphere)
+                            if (hdProbe != null && hdProbe.influenceVolume.shape == Shape.Sphere)
                                 lightVolumeType = LightVolumeType.Sphere;
                             ++envLightCount;
 
@@ -2277,9 +2277,10 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             if (add == null)
             {
                 add = HDUtils.s_DefaultHDAdditionalReflectionData;
-                add.blendDistancePositive = Vector3.one * probe.blendDistance;
-                add.blendDistanceNegative = add.blendDistancePositive;
-                add.influenceShape = Shape.Box;
+                Vector3 distance = Vector3.one * probe.blendDistance;
+                add.influenceVolume.boxBlendDistancePositive = distance;
+                add.influenceVolume.boxBlendDistanceNegative = distance;
+                add.influenceVolume.shape = Shape.Box;
             }
             return add;
         }

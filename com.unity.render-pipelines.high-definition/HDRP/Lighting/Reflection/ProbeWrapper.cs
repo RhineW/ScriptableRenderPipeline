@@ -69,9 +69,10 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
             if (add == null)
             {
                 add = HDUtils.s_DefaultHDAdditionalReflectionData;
-                add.blendDistancePositive = Vector3.one * probe.blendDistance;
-                add.blendDistanceNegative = add.blendDistancePositive;
-                add.influenceShape = Shape.Box;
+                Vector3 distance = Vector3.one * probe.blendDistance;
+                add.influenceVolume.boxBlendDistancePositive = distance;
+                add.influenceVolume.boxBlendDistanceNegative = distance;
+                add.influenceVolume.shape= Shape.Box;
             }
             return add;
         }
@@ -90,29 +91,29 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
 
         public override Texture texture { get { return probe.texture; } }
         public override ReflectionProbeMode mode { get { return probe.probe.mode; } }
-        public override EnvShapeType influenceShapeType { get { return ConvertShape(additional.influenceShape); } }
+        public override EnvShapeType influenceShapeType { get { return ConvertShape(additional.influenceVolume.shape); } }
         public override float weight { get { return additional.weight; } }
         public override float multiplier { get { return additional.multiplier; } }
         public override Vector3 influenceExtents
         {
             get
             {
-                switch (additional.influenceShape)
+                switch (additional.influenceVolume.shape)
                 {
                     default:
                     case Shape.Box:
                         return probe.bounds.extents;
                     case Shape.Sphere:
-                        return Vector3.one * additional.influenceSphereRadius;
+                        return Vector3.one * additional.influenceVolume.sphereRadius;
                 }
             }
         }
-        public override Vector3 blendNormalDistancePositive { get { return additional.blendNormalDistancePositive; } }
-        public override Vector3 blendNormalDistanceNegative { get { return additional.blendNormalDistanceNegative; } }
-        public override Vector3 blendDistancePositive { get { return additional.blendDistancePositive; } }
-        public override Vector3 blendDistanceNegative { get { return additional.blendDistanceNegative; } }
-        public override Vector3 boxSideFadePositive { get { return additional.boxSideFadePositive; } }
-        public override Vector3 boxSideFadeNegative { get { return additional.boxSideFadeNegative; } }
+        public override Vector3 blendNormalDistancePositive { get { return additional.influenceVolume.boxBlendNormalDistancePositive; } }
+        public override Vector3 blendNormalDistanceNegative { get { return additional.influenceVolume.boxBlendNormalDistanceNegative; } }
+        public override Vector3 blendDistancePositive { get { return additional.influenceVolume.boxBlendDistancePositive; } }
+        public override Vector3 blendDistanceNegative { get { return additional.influenceVolume.boxBlendDistanceNegative; } }
+        public override Vector3 boxSideFadePositive { get { return additional.influenceVolume.boxSideFadePositive; } }
+        public override Vector3 boxSideFadeNegative { get { return additional.influenceVolume.boxSideFadeNegative; } }
 
         public override EnvShapeType proxyShapeType
         {
@@ -174,19 +175,19 @@ namespace UnityEngine.Experimental.Rendering.HDPipeline
                 {
                     default:
                     case Shape.Box:
-                        return planarReflectionProbe.influenceVolume.boxBaseSize * 0.5f;
+                        return planarReflectionProbe.influenceVolume.boxSize * 0.5f;
                     case Shape.Sphere:
-                        return planarReflectionProbe.influenceVolume.sphereBaseRadius * Vector3.one;
+                        return planarReflectionProbe.influenceVolume.sphereRadius * Vector3.one;
                 }
             }
         }
 
-        public override Vector3 blendNormalDistancePositive { get { return planarReflectionProbe.influenceVolume.boxNormalPositiveFade; } }
-        public override Vector3 blendNormalDistanceNegative { get { return planarReflectionProbe.influenceVolume.boxNormalNegativeFade; } }
-        public override Vector3 blendDistancePositive { get { return planarReflectionProbe.influenceVolume.boxPositiveFade; } }
-        public override Vector3 blendDistanceNegative { get { return planarReflectionProbe.influenceVolume.boxNegativeFade; } }
-        public override Vector3 boxSideFadePositive { get { return planarReflectionProbe.influenceVolume.boxFacePositiveFade; } }
-        public override Vector3 boxSideFadeNegative { get { return planarReflectionProbe.influenceVolume.boxFaceNegativeFade; } }
+        public override Vector3 blendNormalDistancePositive { get { return planarReflectionProbe.influenceVolume.boxBlendNormalDistancePositive; } }
+        public override Vector3 blendNormalDistanceNegative { get { return planarReflectionProbe.influenceVolume.boxBlendNormalDistanceNegative; } }
+        public override Vector3 blendDistancePositive { get { return planarReflectionProbe.influenceVolume.boxBlendDistancePositive; } }
+        public override Vector3 blendDistanceNegative { get { return planarReflectionProbe.influenceVolume.boxBlendDistanceNegative; } }
+        public override Vector3 boxSideFadePositive { get { return planarReflectionProbe.influenceVolume.boxSideFadePositive; } }
+        public override Vector3 boxSideFadeNegative { get { return planarReflectionProbe.influenceVolume.boxSideFadeNegative; } }
         public override EnvShapeType proxyShapeType { get { return ConvertShape(planarReflectionProbe.proxyShape); } }
         public override Vector3 proxyExtents { get { return planarReflectionProbe.proxyExtents; } }
         public override bool infiniteProjection { get { return planarReflectionProbe.infiniteProjection; } }

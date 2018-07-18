@@ -6,12 +6,12 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.HDPipeline;
 using UnityEngine.Rendering;
 
-namespace UnityEditor.Experimental.Rendering
+namespace UnityEditor.Experimental.Rendering.HDPipeline
 {
     using CED = CoreEditorDrawer<HDReflectionProbeUI, SerializedHDReflectionProbe>;
     using _ = CoreEditorUtils;
 
-    public partial class HDReflectionProbeUI
+    internal partial class HDReflectionProbeUI
     {
         static HDReflectionProbeUI()
         {
